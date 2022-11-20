@@ -1,9 +1,10 @@
 import React from "react";
 import { useGlobalContext } from "../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
+import ToDoCard from "./ToDoCard";
 
 const Dashboard = () => {
-  const { user } = useGlobalContext();
+  const { user, completeToDos, incompleteToDos } = useGlobalContext();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -12,7 +13,25 @@ const Dashboard = () => {
     }
   }, [user, navigate]);
 
-  return <h1>Dashboard</h1>;
+  return (
+    <div className="dashboard">
+      <div className="todos">
+        <h2 className="todos__title">Incomplete ToDo's</h2>
+        {incompleteToDos.map((toDo) => (
+          <ToDoCard toDo={toDo} key={toDo._id} />
+        ))}
+
+        {completeToDos.length > 0 && (
+          <div className="todos">
+            <h2 className="todos__title">Complete ToDo's</h2>
+            {completeToDos.map((toDo) => (
+              <ToDoCard toDo={toDo} ey={toDo._id} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;
