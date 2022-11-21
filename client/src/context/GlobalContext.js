@@ -99,12 +99,6 @@ export const GlobalProvider = (props) => {
   };
 
   const toDoComplete = (toDo) => {
-    // dispatch({
-    //   type: "SET_INCOMPLETE_TODOS",
-    //   payload: state.incompleteToDos.filter(
-    //     (incompleteToDo) => incompleteToDo._id !== toDo._id
-    //   ),
-    // });
     dispatch({
       type: "SET_INCOMPLETE_TODOS",
       payload: state.incompleteToDos.filter(
@@ -116,11 +110,6 @@ export const GlobalProvider = (props) => {
       type: "SET_COMPLETE_TODOS",
       payload: [toDo, ...state.completeToDos],
     });
-
-    // dispatch({
-    //   type: "SET_COMPLETE_TODOS",
-    //   payload: [toDo, ...state.completeToDos],
-    // });
   };
 
   const toDoIncomplete = (toDo) => {
@@ -141,6 +130,46 @@ export const GlobalProvider = (props) => {
     });
   };
 
+  const removeToDo = (toDo) => {
+    if (toDo.complete) {
+      dispatch({
+        type: "SET_COMPLETE_TODOS",
+        payload: state.completeToDos.filter(
+          (completeToDo) => completeToDo._id !== toDo._id
+        ),
+      });
+    } else {
+      dispatch({
+        type: "SET_INCOMPLETE_TODOS",
+        payload: state.incompleteToDos.filter(
+          (incompleteToDo) => incompleteToDo._id !== toDo._id
+        ),
+      });
+    }
+  };
+
+  const updateToDo = (toDo) => {
+    if (toDo.complete) {
+      const newCompleteToDos = state.completeToDos.map((completeToDo) =>
+        completeToDo._id !== toDo._id ? completeToDo : toDo
+      );
+
+      dispatch({
+        type: "SET_COMPLETE_TODOS",
+        payload: newCompleteToDos,
+      });
+    } else {
+      const newIncompleteToDos = state.incompleteToDos.map((incompleteToDo) =>
+        incompleteToDo._id !== toDo._id ? incompleteToDo : toDo
+      );
+
+      dispatch({
+        type: "SET_INCOMPLETE_TODOS",
+        payload: newIncompleteToDos,
+      });
+    }
+  };
+
   const value = {
     ...state,
     getCurrentUser,
@@ -148,6 +177,8 @@ export const GlobalProvider = (props) => {
     addToDo,
     toDoComplete,
     toDoIncomplete,
+    removeToDo,
+    updateToDo,
   };
 
   return (

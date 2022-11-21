@@ -5,7 +5,8 @@ import { useGlobalContext } from "../context/GlobalContext";
 const ToDoCard = ({ toDo }) => {
   const [content, setContent] = React.useState(toDo.content);
   const [editing, setEditing] = React.useState(false);
-  const { toDoComplete, toDoIncomplete } = useGlobalContext();
+  const { toDoComplete, toDoIncomplete, removeToDo, updateToDo } =
+    useGlobalContext();
   const input = React.useRef(null);
 
   const onEdit = (e) => {
@@ -39,6 +40,30 @@ const ToDoCard = ({ toDo }) => {
     });
   };
 
+  const deleteToDo = (e) => {
+    e.preventDefault();
+
+    if (window.confirm("Are you sure you want to delete this ToDo?")) {
+      axios.delete(`/api/todos/${toDo._id}`).then(() => {
+        removeToDo(toDo);
+      });
+    }
+  };
+
+  const editToDo = (e) => {
+    e.preventDefault();
+
+    axios
+      .put(`/api/todos/${toDo._id}`, { content })
+      .then((res) => {
+        updateToDo(res.data);
+        setEditing(false);
+      })
+      .catch(() => {
+        stopEditing();
+      });
+  };
+
   return (
     <div className={`todo ${toDo.complete ? "todo--complete" : ""}`}>
       <input
@@ -58,12 +83,12 @@ const ToDoCard = ({ toDo }) => {
         {!editing ? (
           <>
             {!toDo.complete && <button onClick={onEdit}>Edit</button>}
-            <button>Delete</button>
+            <button onClick={deleteToDo}>Delete</button>
           </>
         ) : (
           <>
             <button onClick={stopEditing}>Cancel</button>
-            <button>Save</button>
+            <button onClick={editToDo}>Save</button>
           </>
         )}
       </div>
