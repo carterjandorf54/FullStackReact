@@ -26,7 +26,7 @@ const Dashboard = () => {
           <div className="todos">
             <h2 className="todos__title">Complete ToDo's</h2>
             {completeToDos.map((toDo) => (
-              <ToDoCard toDo={toDo} ey={toDo._id} />
+              <ToDoCard toDo={toDo} key={toDo._id} />
             ))}
           </div>
         )}

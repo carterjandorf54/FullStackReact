@@ -99,6 +99,12 @@ export const GlobalProvider = (props) => {
   };
 
   const toDoComplete = (toDo) => {
+    // dispatch({
+    //   type: "SET_INCOMPLETE_TODOS",
+    //   payload: state.incompleteToDos.filter(
+    //     (incompleteToDo) => incompleteToDo._id !== toDo._id
+    //   ),
+    // });
     dispatch({
       type: "SET_INCOMPLETE_TODOS",
       payload: state.incompleteToDos.filter(
@@ -110,6 +116,11 @@ export const GlobalProvider = (props) => {
       type: "SET_COMPLETE_TODOS",
       payload: [toDo, ...state.completeToDos],
     });
+
+    // dispatch({
+    //   type: "SET_COMPLETE_TODOS",
+    //   payload: [toDo, ...state.completeToDos],
+    // });
   };
 
   const toDoIncomplete = (toDo) => {
